@@ -1,20 +1,53 @@
 public class minesweeper
 {
+minefield mf;
 
-public static void main(String[] args){
-  minefield one = new minefield();
+public minesweeper(){
+  minefield mf = new minefield();
+
+  //Setup the field
+  mf.boolFieldGen();
+  mf.setMines();
+  mf.playFieldGen();
+  mf.digFieldGen();
+
+}
+
+
+public void dig(int x, int y){
+
+  boolean diggable = mf.getDigField(x,y);
+  int value = mf.getPlayField(x,y);
+
+  if (diggable == false){
+    System.out.println("Grid already dug or flagged.");
+  } else if (value == 9){
+    System.out.println("You hit a mine! Game Over.");
+  } else {
+    mf.setDigField(x,y,false);
+  }
+
+
+
+  }
+
+
+
+
+public void flag(int x, int y){
 
 
 }
 
 
-//generate minefield
-//generate playing minefield
+
+//generate minefield - DONE
+//generate playing minefield - DONE
 
 
 
-//method to flag grid
-//method to dig grid
+//method to flag grid - DOING
+//method to dig grid - DOING
 //must display number if not mine
 
 //generate number for grid based on surrounding mines
