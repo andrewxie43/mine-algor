@@ -1,5 +1,5 @@
 import java.util.Scanner;
-
+//NOT IDIOT PROOFED
 
 public class minesweeper
 {
@@ -28,28 +28,19 @@ System.out.println("For example, to flag (4,5), type 'F 4 5'. To dig (4,5), type
 gameInProgress = true;
 
 
- //Display the blank playing Field
+ //Display the playing Field
   mf.refreshDisplay();
 
 //Give option to dig or flag
 
-if (gameInProgress == true){ //check if in game
+while (gameInProgress == true) { //check if in game
   Scanner reader = new Scanner(System.in);  // Reading from System
-  String user_action = reader.next(); //need to close scanner?
+  String user_action = reader.nextLine(); //need to close scanner?
   reader.close();
 
-
-
-
-} else { //game over
-
+  new minesweeper().parseUserAction(user_action, " ");
 
 }
-
-
-
-
-
 
 }
 
@@ -69,6 +60,8 @@ public minesweeper(){
 
 //User Actions during play
 public void dig(int x, int y){
+
+  System.out.println(mf.getDigField(x,y));
 
   boolean diggable = mf.getDigField(x,y);
   int value = mf.getPlayField(x,y);
@@ -114,16 +107,36 @@ public void flag(int x, int y){
 
 }
 
-public void parseUserAction(String ua){ //parse user action to dig/flag
-  int first = ua.indexOf(" ");
-  int second = ua.indexOf(" ", first);
-  int third = ua.indexOf(" ", second);
-
-  String first 
 
 
 
+
+public void parseUserAction(String ua, String div){ //parse user action to dig/flag
+  int first = ua.indexOf(div);
+  int second = ua.lastIndexOf(div); //change based on input format
+
+  String action = ua.substring(0,first);
+  String x_coord = ua.substring(first + 1, second);
+  String y_coord = ua.substring(second + 1, ua.length());
+
+  if (action.equals("F")){ //remember to parse to uppercase when IPing!
+    try{
+      System.out.println(mf.getDigField(x,y));
+      flag(Integer.parseInt(x_coord),Integer.parseInt(y_coord));
+    } catch (IndexOutOfBoundsException e) {
+    System.out.println("Invalid coords");
+  }
+} if (action.equals("D")) {
+  try{
+    System.out.println(mf.getDigField(x,y));
+    dig(Integer.parseInt(x_coord),Integer.parseInt(y_coord));
+  } catch (IndexOutOfBoundsException e) {
+  System.out.println("Invalid coords");
+}
+} else {
+  System.out.println("Invalid action");
 }
 
+}
 
 }
