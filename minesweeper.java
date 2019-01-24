@@ -24,6 +24,7 @@ public void dig(int x, int y){
   } else if (value == 9){
     System.out.println("You hit a mine! Game Over.");
   } else {
+    
     mf.setDigField(x,y,false);
   }
 

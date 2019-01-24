@@ -6,7 +6,7 @@ public class minefield { //generate 8x8 minefield with 10 mines.
   boolean[][] boolField = new boolean[8][8];
   int[][] playField = new int[8][8];
   boolean[][] digField = new boolean[8][8]; //check if diggable
-  
+  String[][] displayField = new String[8][8];
 
   public minefield(){
     /* //Testing Block
@@ -46,9 +46,32 @@ public class minefield { //generate 8x8 minefield with 10 mines.
     }
   }
   public void setMines(){ //sets 10 mines
+
+    int[] x_mines = new int[10];
+    int[] y_mines = new int[10];
+
     for(int i = 0; i < 10; i++){ //10 mines
-        boolField[ThreadLocalRandom.current().nextInt(0, 8)][ThreadLocalRandom.current().nextInt(0, 8)] = true;
+
+      int x = ThreadLocalRandom.current().nextInt(0, 8);
+      int y = ThreadLocalRandom.current().nextInt(0, 8);
+
+      for(int p = 0; p < x_mines.length; p++){
+        if(x_mines[p] == x){
+          x = ThreadLocalRandom.current().nextInt(0, 8);
+        }
       }
+
+      for(int o = 0; o < y_mines.length; o++){
+        if(y_mines[o] == y){
+          y = ThreadLocalRandom.current().nextInt(0, 8);
+        }
+
+      boolField[x][y] = true;
+      x_mines[x_mines.length + 1] = x;
+      y_mines[y_mines.length + 1] = y;
+
+      }
+    } //find way to prevent overlaps
     }
   public void playFieldGen(){
     for(int i = 0; i < 8; i++){ //iterate through rows
@@ -95,6 +118,13 @@ public class minefield { //generate 8x8 minefield with 10 mines.
     }
   }
 
+  public void displayFieldGen(){
+    for(int i = 0; i < 8; i++){ //iterate through rows
+      for(int x = 0; x < 8; x++){ //iterate through "columns"
+        displayField[x][i] = "-";
+      }
+    }
+  }
   public int getPlayField(int x, int y){
     return this.playField[x][y];
   }
@@ -108,6 +138,7 @@ public class minefield { //generate 8x8 minefield with 10 mines.
   public void setDigField(int x, int y, boolean b){
     this.digField[x][y] = b;
   }
+
 
 
 
