@@ -50,8 +50,8 @@ public class minefield { //generate 8x8 minefield with 10 mines.
   }
   public void setMines(){ //sets 10 mines
 
-    int[] x_mines = new int[10];
-    int[] y_mines = new int[10];
+    int[] x_mines = new int[11];
+    int[] y_mines = new int[11];
 
     for(int i = 0; i < 10; i++){ //10 mines
 
@@ -70,12 +70,30 @@ public class minefield { //generate 8x8 minefield with 10 mines.
         }
 
       boolField[x][y] = true;
-      x_mines[x_mines.length + 1] = x;
-      y_mines[y_mines.length + 1] = y;
+
+      for(int z = 0; z < x_mines.length; z++) {
+        Integer x_value = Integer.valueOf(x_mines[z]);
+        if(x_value == null){
+          x_mines[z] = x;
+          break;
+        }
+      }
+
+      for(int z = 0; z < y_mines.length; z++) {
+        Integer y_value = Integer.valueOf(y_mines[z]);
+        if(y_value == null){
+          x_mines[z] = y;
+          break;
+        }
+      }
+}
+
+
 
       }
-    } //find way to prevent overlaps
     }
+
+
   public void playFieldGen(){
     for(int i = 0; i < 8; i++){ //iterate through rows
       for(int x = 0; x < 8; x++){ //iterate through "columns"
@@ -134,6 +152,19 @@ public class minefield { //generate 8x8 minefield with 10 mines.
   public boolean getDigField(int x, int y){
     return this.digField[x][y];
   }
+
+
+  public void refreshDisplay(){
+    for(int i = 0; i < 8; i++){ //iterate through rows
+      for(int x = 0; x < 8; x++){ //iterate through "columns"
+        System.out.print(displayField[x][i]);
+        System.out.print(' ');
+      }
+      System.out.print("\n");
+    }
+  }
+
+
 
   public void setPlayField(int x, int y, int g){
     this.playField[x][y] = g;

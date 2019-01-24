@@ -1,6 +1,57 @@
+import java.util.Scanner;
+
+
 public class minesweeper
 {
 minefield mf;
+public static boolean gameInProgress;
+
+
+public static void main(String[] args){
+  minefield mf = new minefield();
+
+  //Setup the field
+  mf.boolFieldGen();
+  mf.setMines();
+  mf.playFieldGen();
+  mf.digFieldGen();
+  mf.displayFieldGen();
+
+//Begin Play
+
+//Display Info
+System.out.println("\n \n \n");
+System.out.println("Welcome to Minesweeper.");
+System.out.println("Input actions as follows:");
+System.out.println("[Action] [x coord] [y coord]");
+System.out.println("For example, to flag (4,5), type 'F 4 5'. To dig (4,5), type 'D 4 5'.");
+gameInProgress = true;
+
+
+ //Display the blank playing Field
+  mf.refreshDisplay();
+
+//Give option to dig or flag
+
+if (gameInProgress == true){ //check if in game
+  Scanner reader = new Scanner(System.in);  // Reading from System
+  String user_action = reader.next(); //need to close scanner?
+  reader.close();
+
+
+
+
+} else { //game over
+
+
+}
+
+
+
+
+
+
+}
 
 public minesweeper(){
   minefield mf = new minefield();
@@ -11,9 +62,12 @@ public minesweeper(){
   mf.playFieldGen();
   mf.digFieldGen();
 
-}
+  }
 
 
+
+
+//User Actions during play
 public void dig(int x, int y){
 
   boolean diggable = mf.getDigField(x,y);
@@ -23,6 +77,7 @@ public void dig(int x, int y){
     System.out.println("Grid already dug or flagged.");
   } else if (value == 9){
     System.out.println("You hit a mine! Game Over.");
+    gameInProgress = false;
   } else {
 
     if (value != 0){
@@ -37,7 +92,8 @@ public void dig(int x, int y){
           try { //edges do not have all sides to detect
             if (mf.playField[x+j][y+k] == 0)
               dig(x+j,y+k);
-            } catch (IndexOutOfBoundsException e) {
+            }
+          catch (IndexOutOfBoundsException e) {
             }
           }
         }
@@ -48,11 +104,7 @@ public void dig(int x, int y){
 
 
 
-  }
-
-
-
-
+}
 public void flag(int x, int y){
   boolean diggable = mf.getDigField(x,y);
   if (diggable == false){
@@ -62,22 +114,16 @@ public void flag(int x, int y){
 
 }
 
+public void parseUserAction(String ua){ //parse user action to dig/flag
+  int first = ua.indexOf(" ");
+  int second = ua.indexOf(" ", first);
+  int third = ua.indexOf(" ", second);
+
+  String first 
 
 
-//generate minefield - DONE
-//generate playing minefield - DONE
 
-
-
-//method to flag grid - DONE
-//method to dig grid - DONE
-//must display number if not mine - DONE
-
-//generate number for grid based on surrounding mines
-
-//dig method, if no number, dig all surrounding with no number until number.
-
-//getspace method for "key" minefield
+}
 
 
 }
