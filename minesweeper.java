@@ -24,7 +24,25 @@ public void dig(int x, int y){
   } else if (value == 9){
     System.out.println("You hit a mine! Game Over.");
   } else {
-    
+
+    if (value != 0){
+      mf.displayField[x][y] = Integer.toString(value);
+    } else if (value == 0){
+      mf.displayField[x][y] = " ";
+    } //set display to be space for zero, number otherwise.
+
+    if (value == 0){
+      for(int j = -1; j <= 1; j++){
+        for(int k = -1; k <= 1; k++){
+          try { //edges do not have all sides to detect
+            if (mf.playField[x+j][y+k] == 0)
+              dig(x+j,y+k);
+            } catch (IndexOutOfBoundsException e) {
+            }
+          }
+        }
+      } //check for zero, dig zero
+
     mf.setDigField(x,y,false);
   }
 
@@ -36,7 +54,11 @@ public void dig(int x, int y){
 
 
 public void flag(int x, int y){
-
+  boolean diggable = mf.getDigField(x,y);
+  if (diggable == false){
+    System.out.println("Grid already dug or flagged.");
+  }
+    mf.displayField[x][y] = "F";
 
 }
 
@@ -47,9 +69,9 @@ public void flag(int x, int y){
 
 
 
-//method to flag grid - DOING
-//method to dig grid - DOING
-//must display number if not mine
+//method to flag grid - DONE
+//method to dig grid - DONE
+//must display number if not mine - DONE
 
 //generate number for grid based on surrounding mines
 

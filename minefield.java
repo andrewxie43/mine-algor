@@ -1,5 +1,8 @@
 import java.util.concurrent.ThreadLocalRandom; //for random num via "int randomNum = ThreadLocalRandom.current().nextInt(min, max + 1);"
 
+
+
+//TEST
 public class minefield { //generate 8x8 minefield with 10 mines.
   //TO DO: MAKE MINEFIELD CUSTOMIZABLE.
 
