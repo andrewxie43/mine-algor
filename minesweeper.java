@@ -1,6 +1,11 @@
 import java.util.Scanner;
 //NOT IDIOT PROOFED
 
+/*
+test:
+Digging/flagging already dug/flagged grid
+*/
+
 public class minesweeper
 {
 static minefield mf = new minefield();
@@ -45,7 +50,7 @@ while (gameInProgress == true) { //check if in game
 }
 
 
-//Add cases for the following: All mines dug,
+//Add cases for the following: All mines dug, unflag square, questionable flag
 
 
 
@@ -57,19 +62,15 @@ public void dig(int x, int y){
 
   if (diggable == false){
     System.out.println("Grid already dug or flagged.");
-  } else if (value == 9){
+  } else if (value == 9){ //works
     System.out.println("You hit a mine! Game Over.");
     gameInProgress = false;
-  } else {
-    if (value != 0){
+  } else if (value != 0){ //works
       mf.displayField[x][y] = Integer.toString(value);
-    } else if (value == 0){
+    } else if (value == 0){ //stack overflows
       mf.displayField[x][y] = "0";
-    } //set display to be space for zero, number otherwise.
 
-
-    if (value == 0){
-      for(int j = -1; j <= 1; j++){
+      for(int j = -1; j <= 1; j++){ //check for zero, dig zero
         for(int k = -1; k <= 1; k++){
           try { //edges do not have all sides to detect
             if (mf.playField[x+j][y+k] == 0 && mf.digField[x+j][y+k] == true){
@@ -80,30 +81,11 @@ public void dig(int x, int y){
             }
           }
         }
-      } //check for zero, dig zero
-
-/*
-
-        for(int j = -1; j <= 1; j++){
-          for(int k = -1; k <= 1; k++){
-            if (value == 0 && mf.playField[x+j][y+k] == 0 && mf.digField[x+j][y+k] == true){
-              try { //edges do not have all sides to detect
-                  dig(x+j,y+k); //causes Stack Overflow
-                }
-            catch (IndexOutOfBoundsException e) {
-              }
-            }
-          }
-        } //check for zero, dig zero
-*/
-
+    } //set display to be space for zero, number otherwise.
     mf.displayField[x][y] = Integer.toString(mf.playField[x][y]);
     mf.setDigField(x,y,false);
   }
 
-
-
-}
 public void flag(int x, int y){
   boolean diggable = mf.getDigField(x,y);
   if (diggable == false){
@@ -132,7 +114,7 @@ public void parseUserAction(String ua, String div){ //parse user action to dig/f
     dig(Integer.parseInt(x_coord),Integer.parseInt(y_coord));
     return;
   } catch (IndexOutOfBoundsException e) {
-  System.out.println("Invalid coords"); //0,0 returns invalid Coord.
+  System.out.println("Invalid coords");
 }
 } else {
   System.out.println("Invalid action");
