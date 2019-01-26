@@ -64,23 +64,23 @@ public void dig(int x, int y){
     System.out.println("Grid already dug or flagged.");
   } else if (value == 9){ //works
     System.out.println("You hit a mine! Game Over.");
+    //Display field, mine locations
     gameInProgress = false;
   } else if (value != 0){ //works
       mf.displayField[x][y] = Integer.toString(value);
     } else if (value == 0){ //stack overflows
-      mf.displayField[x][y] = "0";
-
+      mf.displayField[x][y] = Integer.toString(value);
       for(int j = -1; j <= 1; j++){ //check for zero, dig zero
         for(int k = -1; k <= 1; k++){
           try { //edges do not have all sides to detect
             if (mf.playField[x+j][y+k] == 0 && mf.digField[x+j][y+k] == true){
               dig(x+j,y+k); //causes Stack Overflow
             }
-            }
+          }
           catch (IndexOutOfBoundsException e) {
-            }
           }
         }
+      }
     } //set display to be space for zero, number otherwise.
     mf.displayField[x][y] = Integer.toString(mf.playField[x][y]);
     mf.setDigField(x,y,false);
