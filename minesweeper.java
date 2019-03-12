@@ -10,7 +10,7 @@ public class minesweeper
 {
 static minefield mf = new minefield();
 public static boolean gameInProgress;
-
+public static int temp = 0; //control dig overflow
 
 public static void main(String[] args){
 
@@ -60,6 +60,7 @@ public void dig(int x, int y){
   boolean diggable = mf.getDigField(x,y);
   int value = mf.getPlayField(x,y);
 
+
   if (diggable == false){
     System.out.println("Grid already dug or flagged.");
   } else if (value == 9){ //works
@@ -74,24 +75,27 @@ public void dig(int x, int y){
         for(int k = -1; k <= 1; k++){
           try { //edges do not have all sides to detect
             if (mf.playField[x+j][y+k] == 0 && mf.digField[x+j][y+k] == true){
-              dig(x+j,y+k); //causes Stack Overflow
+             dig(x+j,y+k);
             }
           }
           catch (IndexOutOfBoundsException e) {
           }
+	        catch (StackOverflowError e){
         }
       }
     } //set display to be space for zero, number otherwise.
     mf.displayField[x][y] = Integer.toString(mf.playField[x][y]);
     mf.setDigField(x,y,false);
-  }
 
+  }
+}
 public void flag(int x, int y){
   boolean diggable = mf.getDigField(x,y);
   if (diggable == false){
     System.out.println("Grid already dug or flagged.");
   }
     mf.displayField[x][y] = "F";
+    mf.setDigField(x,y,false);
 
 }
 
@@ -112,6 +116,7 @@ public void parseUserAction(String ua, String div){ //parse user action to dig/f
 } if (action.equals("D")) {
     try{
     dig(Integer.parseInt(x_coord),Integer.parseInt(y_coord));
+    temp = 0;
     return;
   } catch (IndexOutOfBoundsException e) {
   System.out.println("Invalid coords");
