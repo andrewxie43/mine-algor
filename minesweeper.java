@@ -2,9 +2,11 @@ import java.util.Scanner;
 //NOT IDIOT PROOFED
 
 /*
-test:
-Digging/flagging already dug/flagged grid
+For testing only.
 */
+
+
+
 
 public class minesweeper
 {
@@ -25,11 +27,14 @@ public static void main(String[] args){
 //Begin Play
 
 //Display Info
+/*
 System.out.println("\n \n \n");
 System.out.println("Welcome to Minesweeper.");
 System.out.println("Input actions as follows:");
 System.out.println("[Action] [x coord] [y coord]");
 System.out.println("For example, to flag (4,5), type 'F 4 5'. To dig (4,5), type 'D 4 5'.");
+*/
+
 gameInProgress = true;
 
 
