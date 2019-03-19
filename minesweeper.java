@@ -27,13 +27,13 @@ public static void main(String[] args){
 //Begin Play
 
 //Display Info
-/*
+
 System.out.println("\n \n \n");
 System.out.println("Welcome to Minesweeper.");
 System.out.println("Input actions as follows:");
 System.out.println("[Action] [x coord] [y coord]");
 System.out.println("For example, to flag (4,5), type 'F 4 5'. To dig (4,5), type 'D 4 5'.");
-*/
+
 
 gameInProgress = true;
 
@@ -44,6 +44,16 @@ gameInProgress = true;
 
 while (gameInProgress == true) { //check if in game
   mf.refreshDisplay();  //Display the playing Field
+System.out.print("\n");
+  for(int i = 0; i < 8; i++){ //iterate through rows
+    for(int x = 0; x < 8; x++){ //iterate through "columns"
+      System.out.print(mf.playField[x][i]);
+      System.out.print(' ');
+    }
+    System.out.print("\n");
+  }
+
+
   Scanner reader = new Scanner(System.in); //if scanner closed, error.
   String user_action = reader.nextLine();
 
@@ -76,21 +86,22 @@ public void dig(int x, int y){
       mf.displayField[x][y] = Integer.toString(value);
     } else if (value == 0){ //stack overflows
       mf.displayField[x][y] = Integer.toString(value);
+      mf.setDigField(x,y,false);
+
       for(int j = -1; j <= 1; j++){ //check for zero, dig zero
         for(int k = -1; k <= 1; k++){
           try { //edges do not have all sides to detect
-            if (mf.playField[x+j][y+k] == 0 && mf.digField[x+j][y+k] == true){
+            if (mf.playField[x][y] == 0 && mf.digField[x+j][y+k] == true){
              dig(x+j,y+k);
             }
           }
           catch (IndexOutOfBoundsException e) {
           }
 	        catch (StackOverflowError e){
-        }
+          }
       }
     } //set display to be space for zero, number otherwise.
-    mf.displayField[x][y] = Integer.toString(mf.playField[x][y]);
-    mf.setDigField(x,y,false);
+
 
   }
 }
