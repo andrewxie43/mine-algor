@@ -3,6 +3,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 
+//Test GUI
+
 public class gui{
 
   public static int clickedX;
@@ -59,7 +61,7 @@ public class gui{
     */
 
 
-    JButton actionButton = new JButton("Digging");
+    JButton actionButton = new JButton("Digging"); //dig
 
     actionButton.addActionListener( new ActionListener(){
 
@@ -78,15 +80,9 @@ public class gui{
                   actionButton.setText("Digging");
 
                 }
-
-
-
                 System.out.println("Pressed:");
                 System.out.println("Dig: " + digBool);
                 System.out.println("flag: " + flagBool);
-
-
-
       }
 
     });

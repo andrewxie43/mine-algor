@@ -38,21 +38,33 @@ System.out.println("For example, to flag (4,5), type 'F 4 5'. To dig (4,5), type
 gameInProgress = true;
 
 
-
+int totalmines = mf.returnMines();
 
 //Give option to dig or flag
 
 while (gameInProgress == true) { //check if in game
-  mf.refreshDisplay();  //Display the playing Field
-System.out.print("\n");
-  for(int i = 0; i < 8; i++){ //iterate through rows
-    for(int x = 0; x < 8; x++){ //iterate through "columns"
-      System.out.print(mf.playField[x][i]);
-      System.out.print(' ');
+  int flagged = 0;
+  for(int i = 0; i < 8; i++){ //check if all mines flagged
+    for(int x = 0; x < 8; x++){
+      if(mf.playField[x][i] == 9){
+        if((mf.displayField[x][i].equals("F"))){
+            flagged++;
+        }
+      }
+
     }
-    System.out.print("\n");
   }
 
+  if (flagged == totalmines){
+    gameInProgress = false;
+    System.out.println("You win! All mines flagged");
+    break;
+
+  }
+
+
+System.out.println("\n");
+mf.refreshDisplay();
 
   Scanner reader = new Scanner(System.in); //if scanner closed, error.
   String user_action = reader.nextLine();
@@ -110,8 +122,14 @@ public void flag(int x, int y){
   if (diggable == false){
     System.out.println("Grid already dug or flagged.");
   }
-    mf.displayField[x][y] = "F";
-    mf.setDigField(x,y,false);
+
+  if (mf.displayField[x][y].equals("F")){
+    mf.displayField[x][y] = "-";
+    mf.setDigField(x,y,true);
+  } else {
+      mf.displayField[x][y] = "F";
+      mf.setDigField(x,y,false);
+  }
 
 }
 

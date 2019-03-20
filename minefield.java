@@ -11,6 +11,8 @@ public class minefield { //generate 8x8 minefield with 10 mines.
   boolean[][] digField = new boolean[8][8]; //check if diggable
   String[][] displayField = new String[8][8];
 
+  int minecount = 10;
+
   public minefield(){
     /* //Testing Block
     boolFieldGen();
@@ -40,6 +42,10 @@ public class minefield { //generate 8x8 minefield with 10 mines.
 
   }
 
+  public int returnMines(){
+    return minecount;
+  }
+
 
   public void boolFieldGen(){ //makes blank field
     for(int i = 0; i < 8; i++){ //iterate through rows
@@ -53,7 +59,7 @@ public class minefield { //generate 8x8 minefield with 10 mines.
     int[] x_mines = new int[11];
     int[] y_mines = new int[11];
 
-    for(int i = 0; i < 10; i++){ //10 mines
+    for(int i = 0; i < minecount; i++){ //10 mines
 
       int x = ThreadLocalRandom.current().nextInt(0, 8);
       int y = ThreadLocalRandom.current().nextInt(0, 8);
@@ -172,6 +178,9 @@ public class minefield { //generate 8x8 minefield with 10 mines.
   public void setDigField(int x, int y, boolean b){
     this.digField[x][y] = b;
   }
+
+
+
 
 
 
