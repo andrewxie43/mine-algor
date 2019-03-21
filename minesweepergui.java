@@ -20,7 +20,7 @@ public class minesweepergui{
   public static JButton[][] fieldButton = new JButton[10][10];
 
 
-  int totalmines = mf.returnMines();
+  public static int totalmines = mf.returnMines();
 
 
   //universal label for status report
@@ -30,6 +30,24 @@ public class minesweepergui{
 public static void main(String[] args){
   initGUI();
   initMF();
+
+  while (gameInProgress == true){
+    int flagged = 0;
+    for(int i = 0; i < 8; i++){ //check if all mines flagged
+      for(int x = 0; x < 8; x++){
+        if(mf.playField[x][i] == 9){
+          if((mf.displayField[x][i].equals("F"))){
+              flagged++;
+          }
+        }
+
+      }
+    }
+    if (flagged == totalmines){
+      wongame();
+    }
+
+  }
 }
 
   public static void initGUI(){
@@ -41,18 +59,18 @@ public static void main(String[] args){
         for(int y = 45; y < 755; y+=90){
           final int yCoordFinal = yCoord;
           String name = (Integer.toString(xCoord) + "," + Integer.toString(yCoord));
-
           fieldButton[xCoordFinal][yCoordFinal] = new JButton(new AbstractAction("") {//creating instance of JButton
             @Override
             public void actionPerformed(ActionEvent event) { //field button clicked
               if (digBool == true){
               guiDig(event.getSource(),xCoordFinal,yCoordFinal);
+              this.setEnabled(false); //disable button when clicked, NOT DEBUGGING
             } else {
               guiFlag(event.getSource(),xCoordFinal,yCoordFinal);
             }
 
 
-              this.setEnabled(false); //disable button when clicked, NOT DEBUGGING
+
 
               //implement dig/flag button
             }
@@ -68,7 +86,7 @@ public static void main(String[] args){
       }
 
       JButton actionButton = new JButton("Digging"); //dig
-      actionButton.addActionListener( new ActionListener(){
+      actionButton.addActionListener(new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent arg0) {
 
@@ -77,11 +95,27 @@ public static void main(String[] args){
                     flagBool = true;
                     actionButton.setText("Flagging");
 
+                    for(int x = 0; x < 8; x++){
+                      for(int y = 0; y < 8; y++){
+                        if (fieldButton[x][y].getText().equals("Flag")){
+                          fieldButton[x][y].setEnabled(true);
+                        }
+                      }
+                    }
+
 
                   } else if (digBool == false && flagBool == true){
                     digBool = true;
                     flagBool = false;
                     actionButton.setText("Digging");
+
+                    for(int x = 0; x < 8; x++){
+                      for(int y = 0; y < 8; y++){
+                        if (fieldButton[x][y].getText().equals("Flag")){
+                          fieldButton[x][y].setEnabled(false);
+                        }
+                      }
+                    }
 
                   }
                   System.out.println("Pressed:");
@@ -90,11 +124,24 @@ public static void main(String[] args){
         }
 
       });
+
       actionButton.setBounds(900,45,90,45);
       f.add(actionButton);
 
+      JButton reset = new JButton("Reset");
+      reset.addActionListener(new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent arg0){
+          reset();
+        }
+      });
+
+      reset.setBounds(900,100,90,45);
+      f.add(reset);
+
+
       //label
-      label.setBounds(800, 90, 300, 45);
+      label.setBounds(800, 135, 300, 45);
       f.add(label);
 
       f.setSize(1000,1000);
@@ -132,12 +179,15 @@ public static void main(String[] args){
 
       } else if (value == 9){
         button.setText("Mine");
-        label.setText("You hit a mine! Game Over.");
+        lostgame();
         gameInProgress = false;
       } else if (value != 0){
           button.setText(Integer.toString(value));
+          mf.displayField[x][y] = Integer.toString(value);
+          mf.setDigField(x,y,false);
+          button.setEnabled(false);
         } else if (value == 0){
-
+          mf.displayField[x][y] = Integer.toString(value);
           button.setText(Integer.toString(value));
           mf.setDigField(x,y,false);
           button.setEnabled(false);
@@ -147,63 +197,78 @@ public static void main(String[] args){
             for(int k = -1; k <= 1; k++){
               try { //edges do not have all sides to detect
                 if (mf.playField[x][y] == 0 && mf.digField[x+j][y+k] == true){
-                 guiDig(fieldButton[x+j][y+k],x+j,y+k); //slight problem with changing button references. Manual button names?
+                 guiDig(fieldButton[x+j][y+k],x+j,y+k);
                 }
               }
               catch (IndexOutOfBoundsException e) {
               }
           }
         } //set display to be space for zero, number otherwise.
-      }
-      }
+        }
+    }
 
       public static void guiFlag(Object buton, int x, int y){
         JButton button = (JButton) buton;
-
-        if (button.getText().equals("F")){
+        button.setEnabled(true);
+        if (button.getText().equals("Flag")){
           button.setText("");
+          mf.displayField[x][y] = "";
           mf.setDigField(x,y,true);
         } else {
             button.setText("Flag");
           mf.setDigField(x,y,false);
+          mf.displayField[x][y] = "Flag";
         }
 
       }
 
-      /*
-      public JButton getButtonByName(String name){
-        int divide = name.indexOf(",");
+      public static void reset(){
+        f.setVisible(false);
+        clickedX = 0;
+        clickedY = 0;
+        digBool = true;
+        flagBool = false;
+        mf = new minefield();
+        int totalmines = mf.returnMines();
 
-        String x_coord = name.substring(0, divide);
-        String y_coord = name.substring(divide, name.length());
+        gameInProgress = true;
 
-        return JButton
-      }
-      */
-
-      public boolean checkWinning(){ //check if game won
-          int flagged = 0;
-          for(int i = 0; i < 8; i++){ //check if all mines flagged
-            for(int x = 0; x < 8; x++){
-              if(mf.playField[x][i] == 9){
-                if((mf.displayField[x][i].equals("F"))){
-                    flagged++;
-                }
-              }
+        for(int x = 0; x < 8; x++){
+          for(int y = 0; y < 8; y++){
+            fieldButton[x][y].setText("");
+            fieldButton[x][y].setEnabled(true);
             }
           }
+        f.setVisible(true);
+        initMF();
+      }
 
-          if (flagged == totalmines){
-            return true;
+      public static void lostgame(){ //set all buttons to disable, display entire field
+        label.setText("You hit a mine! Game Over."); //when adding sprites, show flagged mines
+        for(int x = 0; x < 8; x++){
+          for(int y = 0; y < 8; y++){
+            fieldButton[x][y].setText(Integer.toString(mf.getPlayField(x,y)));
+            if (mf.getPlayField(x,y) == 9){
+              fieldButton[x][y].setText("Mine");
+              //case for showing flags
+            }
+            fieldButton[x][y].setEnabled(false);
           }
-
-          return false;
         }
+      }
 
-
-
-
-      public void endgame(){ //set all buttons to disable, display entire field
+      public static void wongame(){
+        label.setText("All mines flagged, you won!"); //when adding sprites, show flagged mines
+        for(int x = 0; x < 8; x++){
+          for(int y = 0; y < 8; y++){
+            fieldButton[x][y].setText(Integer.toString(mf.getPlayField(x,y)));
+            if (mf.getPlayField(x,y) == 9){
+              fieldButton[x][y].setText("Mine");
+              //case for showing flags
+            }
+            fieldButton[x][y].setEnabled(false);
+          }
+        }
 
       }
   }
