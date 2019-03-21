@@ -31,23 +31,6 @@ public static void main(String[] args){
   initGUI();
   initMF();
 
-  while (gameInProgress == true){
-    int flagged = 0;
-    for(int i = 0; i < 8; i++){ //check if all mines flagged
-      for(int x = 0; x < 8; x++){
-        if(mf.playField[x][i] == 9){
-          if((mf.displayField[x][i].equals("F"))){
-              flagged++;
-          }
-        }
-
-      }
-    }
-    if (flagged == totalmines){
-      wongame();
-    }
-
-  }
 }
 
   public static void initGUI(){
@@ -102,8 +85,6 @@ public static void main(String[] args){
                         }
                       }
                     }
-
-
                   } else if (digBool == false && flagBool == true){
                     digBool = true;
                     flagBool = false;
@@ -118,11 +99,21 @@ public static void main(String[] args){
                     }
 
                   }
-                  System.out.println("Pressed:");
-                  System.out.println("Dig: " + digBool);
-                  System.out.println("flag: " + flagBool);
-        }
 
+                    int flagged = 0;
+                    for(int i = 0; i < 8; i++){ //check if all mines flagged
+                      for(int x = 0; x < 8; x++){
+                        if(mf.playField[x][i] == 9){
+                          if((mf.displayField[x][i].equals("Flag"))){
+                              flagged++;
+                          }
+                        }
+                      }
+                    }
+                    if (flagged == totalmines){
+                      wongame();
+                    }
+              }
       });
 
       actionButton.setBounds(900,45,90,45);
@@ -230,6 +221,7 @@ public static void main(String[] args){
         flagBool = false;
         mf = new minefield();
         int totalmines = mf.returnMines();
+        label.setText("");
 
         gameInProgress = true;
 
