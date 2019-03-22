@@ -12,7 +12,6 @@ public class minesweeper
 {
 static minefield mf = new minefield();
 public static boolean gameInProgress;
-public static int temp = 0; //control dig overflow
 
 public static void main(String[] args){
 

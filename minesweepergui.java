@@ -51,12 +51,7 @@ public static void main(String[] args){
             } else {
               guiFlag(event.getSource(),xCoordFinal,yCoordFinal);
             }
-
-
-
-
-              //implement dig/flag button
-            }
+          }
           });
           fieldButton[xCoordFinal][yCoordFinal].setName(name);
 
@@ -97,23 +92,8 @@ public static void main(String[] args){
                         }
                       }
                     }
-
                   }
-
-                    int flagged = 0;
-                    for(int i = 0; i < 8; i++){ //check if all mines flagged
-                      for(int x = 0; x < 8; x++){
-                        if(mf.playField[x][i] == 9){
-                          if((mf.displayField[x][i].equals("Flag"))){
-                              flagged++;
-                          }
-                        }
-                      }
-                    }
-                    if (flagged == totalmines){
-                      wongame();
-                    }
-              }
+                }
       });
 
       actionButton.setBounds(900,45,90,45);
@@ -129,6 +109,32 @@ public static void main(String[] args){
 
       reset.setBounds(900,100,90,45);
       f.add(reset);
+
+
+      int delay = 1;
+      ActionListener checkWin = (new ActionListener(){ //check for win in background
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+          int flagged = 0;
+          for(int i = 0; i < 8; i++){ //check if all mines flagged
+            for(int x = 0; x < 8; x++){
+              if(mf.playField[x][i] == 9){
+                if((mf.displayField[x][i].equals("Flag"))){
+                    flagged++;
+                }
+              }
+            }
+          }
+          if (flagged == totalmines){
+            wongame();
+
+          }
+        }
+      });
+
+      new Timer(delay, checkWin).start();
+
 
 
       //label
@@ -234,6 +240,12 @@ public static void main(String[] args){
         f.setVisible(true);
         initMF();
       }
+
+
+
+
+
+
 
       public static void lostgame(){ //set all buttons to disable, display entire field
         label.setText("You hit a mine! Game Over."); //when adding sprites, show flagged mines
