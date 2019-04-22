@@ -116,17 +116,17 @@ public static void main(String[] args){
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
-          int flagged = 0;
+          boolean mines = true;
           for(int i = 0; i < 8; i++){ //check if all mines flagged
             for(int x = 0; x < 8; x++){
               if(mf.playField[x][i] == 9){
-                if((mf.displayField[x][i].equals("Flag"))){
-                    flagged++;
+                if(!(mf.displayField[x][i].equals("Flag"))){
+                    mines = false;
                 }
               }
             }
           }
-          if (flagged == totalmines){
+          if (mines){
             wongame();
 
           }
@@ -240,12 +240,6 @@ public static void main(String[] args){
         f.setVisible(true);
         initMF();
       }
-
-
-
-
-
-
 
       public static void lostgame(){ //set all buttons to disable, display entire field
         label.setText("You hit a mine! Game Over."); //when adding sprites, show flagged mines
